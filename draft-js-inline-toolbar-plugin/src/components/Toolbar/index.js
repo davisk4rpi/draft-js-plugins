@@ -61,9 +61,21 @@ export default class Toolbar extends React.Component {
 
       if (!selectionRect) return;
 
+      let leftValue = (selectionRect.left - relativeRect.left) + selectionRect.width / 2;
+      let topValue = (selectionRect.top - relativeRect.top) - toolbarHeight;
+
+      // 74 is half the width of the toolbar
+      if (leftValue < 74) {
+        leftValue = 74;
+      } else if (leftValue > relativeRect.width - 74) {
+        leftValue = relativeRect.width - 74;
+      }
+      // fixing the width to 48 prevents the toolbox from splitting into two lines
+      // on the right side
       const position = {
-        top: (selectionRect.top - relativeRect.top) - toolbarHeight,
-        left: (selectionRect.left - relativeRect.left) + (selectionRect.width / 2),
+        top: topValue,
+        left: leftValue,
+        width: 148
       };
       this.setState({ position });
     });
